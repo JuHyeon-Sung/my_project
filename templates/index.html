@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>취미를 그리다 | DRAW HOBBY</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+
+
+        <script type="text/javascript">
+
+            function makeHobby() {
+                let date = $("").val();
+                let hobby = $("").val();
+                let img = $("").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/drawHobby",
+                    data: {date: date, hobby_give: hobby, img_url : img},
+                    success: function (response) {
+                        if(response["result"] == "success") {
+                            alert(response["msg"]);
+                            window.location.reload();
+                        }
+                    }
+
+                })
+
+            }
+
+            function showHobby() {
+                $.ajax({
+                    type: "GET",
+                    url: "/drawHobby",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            let hobby = response["hobby_give"];
+
+                            for (let i = 0; i < hobby.length; i++) {
+                                makecard(hobby[i]["date"], hobby[i]["hobby"], hobby[i]["img"]);
+                            }
+                        } else {
+                            alert("기록한 취미일지를 가져오지 못했습니다");
+                        }
+
+                    }
+
+                })
+
+            }
+
+            function write_mention() {
+                let mention = $("").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/drawHobby/mention",
+                    data: {hobby_mention: mention},
+                    success: function (response) {
+                        if(response["result"] == "success") {
+                            alert(response["mention"]);
+
+                        }
+
+                    }
+
+                })
+
+            }
+
+            function read_mention() {
+                $.ajax({
+                    type: "GET",
+                    url: "/drawHobby/mention",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+
+                        }
+
+                    }
+
+                })
+
+            }
+
+        </script>
+
+    </head>
+    <body>
+        <div>DRAW HOBBY</div>
+    </body>
+</html>
